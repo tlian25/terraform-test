@@ -1,0 +1,6 @@
+txl-test*.json
+financial-risk*.json
+apikeys/*
+.terraform
+*.tfstate*
+*.log
