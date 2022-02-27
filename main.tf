@@ -16,16 +16,21 @@ provider "google" {
 }
 
 
-
-module "compute-instance" {
-  source = "./modules/compute-instance"
-
-}
-
+## Refactor to modules
 
 module "vpc-network" {
   source = "./modules/vpc-network"
 }
+
+
+module "compute-instance" {
+  source = "./modules/compute-instance"
+
+  # From vpc-network outputs
+  vpc_network_name = module.vpc-network.vpc_network_name
+
+}
+
 
 
 module "cos" {
