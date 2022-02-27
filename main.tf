@@ -15,30 +15,27 @@ provider "google" {
   zone        = var.zone
 }
 
-# Define components of infrastructure
-# type
-# name
-# Unique id = <type.name>
-resource "google_compute_network" "vpc_network" {
-  name = "terraform-network"
+
+
+module "compute-instance" {
+  source = "./modules/compute-instance"
+
 }
 
 
-resource "google_compute_instance" "vm_instance" {
-  name         = "terraform-instance"
-  machine_type = "f1-micro"
-  tags         = ["web", "dev", "test"]
-  boot_disk {
-    initialize_params {
-      image = "debian-cloud/debian-9"
-    }
-  }
-
-  network_interface {
-    network = google_compute_network.vpc_network.name
-    access_config {
-    }
-  }
+module "vpc-network" {
+  source = "./modules/vpc-network"
 }
 
+
+module "cos" {
+  source = "./modules/cos"
+  bucket_name = "txl-test-bucket"
+
+  tags = {
+    Terraform = "true"
+    Environment = "dev"
+    Foo = "bar"
+  }
+}
 
